@@ -1,0 +1,14 @@
+package worldProto;
+
+message WorldMessage {
+	repeated RowMessage tileArray = 1;
+}
+
+message RowMessage {
+	repeated TileDataMessage row = 1;
+}
+
+message TileDataMessage {
+	required int32 tileType = 1;
+	required int32 enemyCount = 2;
+}

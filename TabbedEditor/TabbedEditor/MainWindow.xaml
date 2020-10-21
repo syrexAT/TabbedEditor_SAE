@@ -1,0 +1,26 @@
+﻿<Window x:Class="TabbedEditor.MainWindow" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TabbedEditor"
+        mc:Ignorable="d"
+        Title="Tabbed Editor" Height="450" Width="800" Closing="Window_Closing">
+    <Window.CommandBindings>
+        <CommandBinding Command="Open" Executed="CommandBinding_Open"/>
+        <CommandBinding Command="Save" Executed="CommandBinding_Save"/>
+        <CommandBinding Command="SaveAs" Executed="CommandBinding_SaveAs"/>
+    </Window.CommandBindings>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Open..." Command="Open"/>
+                <MenuItem Header="Save" Command="Save"/>
+                <MenuItem Header="Save as..." Command="SaveAs"/>
+            </MenuItem>
+        </Menu>
+        <TabControl Name="TabController" DockPanel.Dock="Top">
+
+        </TabControl>
+    </DockPanel>
+</Window>

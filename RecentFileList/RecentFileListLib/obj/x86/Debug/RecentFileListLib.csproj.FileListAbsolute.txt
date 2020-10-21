@@ -1,0 +1,6 @@
+C:\Users\manue\OneDrive\Dokumente\SAE_PC\TabbedEditor\RecentFileList\RecentFileListLib\bin\x86\Debug\RecentFileListLib.dll
+C:\Users\manue\OneDrive\Dokumente\SAE_PC\TabbedEditor\RecentFileList\RecentFileListLib\bin\x86\Debug\RecentFileListLib.pdb
+C:\Users\manue\OneDrive\Dokumente\SAE_PC\TabbedEditor\RecentFileList\RecentFileListLib\obj\x86\Debug\RecentFileListLib.csprojAssemblyReference.cache
+C:\Users\manue\OneDrive\Dokumente\SAE_PC\TabbedEditor\RecentFileList\RecentFileListLib\obj\x86\Debug\RecentFileListLib.csproj.CoreCompileInputs.cache
+C:\Users\manue\OneDrive\Dokumente\SAE_PC\TabbedEditor\RecentFileList\RecentFileListLib\obj\x86\Debug\RecentFileListLib.dll
+C:\Users\manue\OneDrive\Dokumente\SAE_PC\TabbedEditor\RecentFileList\RecentFileListLib\obj\x86\Debug\RecentFileListLib.pdb

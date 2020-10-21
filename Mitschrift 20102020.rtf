@@ -1,0 +1,265 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1031{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Consolas;}{\f2\fnil\fcharset0 Consolas;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red0\green128\blue0;\red43\green145\blue175;}
+{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+\pard\sl240\slmult1\f0\fs22\lang7 Mitschrift Tool Development 20.10.2020\par
+\'c4hnliches datenformat wie json nur f\'fcr bin\'e4rdaten (alternatives dateiformat)\par
+\par
+also nicht nur mit JsonConvert.DeserializeObject sondern auch mit was anderem\par
+wir machen es das wir es in Unity und WPF benutzen k\'f6nnen\par
+\par
+wir benutzen Protocol Buffers!\par
+ProtoProject\par
+\par
+Protcol buffers ist von google\par
+Daten \'fcbers internet \'fcbertragen die nicht textdaten sind sondern bin\'e4r daten\par
+wieso? weil bin\'e4r daten kleiner sind!\par
+\par
+Json ist immer ausreichen wenns um wenig daten geht (bissl text, info usw)\par
+f\'fcr gro\'dfe Datei sind protocol buffers gut. \par
+Im interenet oft verschiedene sprachen\par
+z.B. Backend ist anders sprache als in unity\par
+also ich muss in verschiedenen sprachen die daten anschauen k\'f6nnen die \'fcbertragen werden\par
+alles gleichzeitig! bei Json funktionierts mehr oder weniger von selber aber man muss sie doppelt schreiben weil die sprachen nicht kompatibel miteinander sind\par
+\par
+in Protocol buffer geht das leider nicht so weils bin\'e4r daten sind.\par
+Aber sprachunabh\'e4ngig also in einer sprache der protocol buffers die daten beschreibt und aus der datenbeschreibugn erzeug ich dann die Klassen die ich \'fcberall benutzen kann, aufgrunddessen kann ich dann serializen und deserializen in allen sprachen\par
+Das funktioniert alles automatisch von google so idk\par
+\par
+Man  braucht daf\'fcr eine ganze ToolChain\par
+wenn wir es in Unity laufen haben wollen brauchen wir noch eine komplexere ToolChain\par
+{{\field{\*\fldinst{HYPERLINK https://developers.google.com/protocol-buffers }}{\fldrslt{https://developers.google.com/protocol-buffers\ul0\cf0}}}}\f0\fs22\par
+\par
+die ToolChain war dieses ProtoProject\par
+\par
+\par
+warum sind bin\'e4rdaten soviel kleiner als alles andere?\par
+\par
+bei Json muss man alle kontrollelemente mitnehmen, also \{\} undso und Namen und whatever lauter so sachen\par
+bei bin\'e4rt daten kommts eh immer in der reihenfolge also man braucht da z.B. keine zusatzinformationen wie namen\par
+\par
+aber bei Zahlen z.B. \par
+floats --> in Json wird die zahl als text gespeichert also pro buchstabe (1 byte maybe) brauch ich um eine float darzustellen 23 byte? mega viel halt\par
+dagegen --> ein float in c# braucht exakt 4 byte\par
+\par
+daher ist bin\'e4r daten so gut weil bei json die zahlen halt in string gespeichert werden und das mega viele bytes braucht\par
+\par
+\par
+Recent File list\par
+in Json speichern\par
+bei Windows entweder 1. paralell zur exe als json oder so speichern\par
+oder 2. als registry speichern\par
+Persistent application settings speichern in die registry\par
+\par
+protocol buffers eigene sprache daten reinschreiben\par
+das kompiliert man und daraus wird dann etwas f\'fcr eine sprache (C++)\par
+und dann kann man das normal in C++ benutzen\par
+oder halt in Java oder C# oder whatever\par
+\par
+Bei apple ger\'e4ten oder auf consolen geht es aber dann nicht so easy\par
+\par
+build_proto.bat --> ist ein textfile mit .bat hinten einfach\par
+echo ist so wie debug log\par
+protoc mit dne parametern ausf\'fchren\par
+dann protogen.exe mit diesen usw.\par
+dann 2 dateien kopieren\par
+dann nochmal das ausf\'fchren precompile.exe usw.\par
+\par
+bat datei f\'fchrt einfach sachen hintereinander auf\par
+\par
+Continous integration --> ehi\'dft das es einen build server gibt\par
+der macht aber mehr als nur builden\par
+wenn man gr\'f6\'dfer ist dann ist es gut wenn nich tjeder auf seinem rechner build clicken muss sondern das das wo anders passiert, unity cloud builds sind so was \'e4hnliches baer wenn man selber server hat undso passt das nicht zusammen und sie sind extrem teuer\par
+was man machen kann man kann einen rechner irgendwo hinstellen, der baut immer eine neue version\par
+man benutzt git oder svn oder irgendeinen versioning stuff, immer wenn man ein push macht dann kriegt der server einen hint "es igb teinen neuen push" er pullt sichs und baut aufgrund des pulls einen neuen build\par
+\par
+daf\'fcr braucht man command lines f\'fcr unity der startet unity baut das und quittet unity wieder\par
+die neue version liegt dann am server und die kann man wieder herunterladen dann einfach\par
+Wenn man dann noch verschiedene branches und \par
+GIT STUFF:\par
+Tags --> damit markeirt man commits einen namen geben einfach z.B. version von dem game\par
+oder Z.b. nicht master branch sondern einen release branch, immer wenn etwas funktioniert dann merge ich alles in den release branch, tag das und nur dinge die am release branch sind die werden gebuilded\par
+\par
+Tests machen mit continous integration --> testen ob code noch richtig ist undso UnitTests (kann man googlen)\par
+\par
+\par
+Jetzt:\par
+Developer Command Prompt for VS 2019 \'f6ffnen\par
+C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community>cd C:\\Users\\manue\\OneDrive\\Dokumente\\SAE_PC\\TabbedEditor\\ProtoProject\par
+\par
+C:\\Users\\manue\\OneDrive\\Dokumente\\SAE_PC\\TabbedEditor\\ProtoProject>build_proto.bat\par
+\par
+Datenkontainer(Klasse) ist in Protocols eine Message\par
+Messages haben Daten in sich... nur Daten es sind nur Datendefinitionen in protocol buffers\par
+\par
+Wir fangen mit TIleData message an (das unterste element was wir haben)\par
+statt TileType enum, speichern wir einfach ein int32 oder man kanns auch als string speichern\par
+m\'f6glichst klein wollen wirs also machen wirs als int32 weil enum gibts nicht in protocol buffers\par
+und hatl ein int enemycount\par
+\par
+\cf2\f1\fs19\tab\cf3 //requiered --> die daten m\f2\'fcssen da sein, so wie members von klassen normalerweise sind quasi member von einer klasse\par
+\cf2\tab\cf3 //optional\par
+\cf2\tab\cf3 //repeated\par
+\cf2\f1\tab requiered \cf1 int32\cf2  tileType = 1;\par
+\par
+\f2\lang3079 die 1 ist der index !\par
+\par
+\f1\tab requiered \cf1 int32\cf2  enemyCount = 2;\par
+\par
+\f2 warum braucht man da ein index? -> da sind wir beidem problem bin\'e4r daten\par
+die speichern die info in der datei nachher nichtmehr das die 1. datei tiletyp eis und die 2. enemycount --> weil in bin\'e4r steht das nicht\par
+es steht z.B. 2 und 20 --> tiltype 2 und enemycount 20 ohne kontext was es bedeuetet\par
+deswegen braucht er eine defintion in welcher reihenfolge es vorkommt deswegen index\par
+--> warum numerien? weil versionierung! wenn ich irgendwann feststell das enemycount unnedig is und ich ihn nichtmehr braucht, wenn ich dann was in der mitte rausl\'f6sch und danach w\'fcrd noch iwas kommen, wenn ich da dann in der mitte nemeycount rausl\'f6sch dann w\'fcrd something wo stehen wo enemycount stehen w\'fcrde\par
+und beim einlesen von einer alten datei dann w\'fcrde da an der stelle wo der enemycount ist something einlesen und die infomration verschiebt sich in der datei\par
+wenn ich aber bei jedem datentyp einen index dazuspeicher, der wird im binary file dazugespeichert im block(1,2,3, usw. den index) deswegen kann man dann im nachhinein nochimmer zuordnen wo was hingeh\'f6rt! \cf0\f0\fs22\lang7\par
+\par
+Arrays gibts keine in Protocol buffers\par
+aber es gibt statt requiered ein repeated\par
+repeated ist ein Array von diesem datentyp also z.B. repeated int32 enemyCount = 2\par
+dann w\'e4re enemyCount eine liste von int32\par
+\par
+wie schreibt man aber 2D arrays? gibts nicht und geht nicht\par
+aber man schreibt halt anstatt das man ein 2D array schreibt einfach ein Array von Arrays\par
+TileData[][] TileArray;\par
+das geht aber auch nicht man muss dazwischne einen typ defienieren den wir repeaten\par
+eigenen datentyp f\'fcr eine zeile machen\par
+\par
+\cf2\f1\fs19\tab\cf1 repeated\cf2  \cf4 TileDataMessage\cf2  row = 1;\par
+\f2\lang3079 array von diesn dingern\par
+\par
+\par
+dann eine worldmessage die enth\'e4lt ein array von den rows\par
+\par
+\cf1\f1 message\cf2  \cf4 WorldMessage\cf2\{\par
+\tab\cf1 repeated\cf2  \cf4 RowMessage\cf2  tileArray = 1;\par
+\}\par
+\par
+\par
+\cf1 message\cf2  \cf4 RowMessage\cf2\{\par
+\tab\cf1 repeated\cf2  \cf4 TileDataMessage\cf2  row = 1;\par
+\}\par
+\cf0\f0\fs22\lang7\par
+\par
+schaut jetzt so aus:\par
+\cf1\f1\fs19 package\cf2  \cf4 worldProto\cf2 ;\par
+\par
+\cf1 message\cf2  \cf4 WorldMessage\cf2  \{\par
+\tab\cf1 repeated\cf2  \cf4 RowMessage\cf2  tileArray = 1;\par
+\}\par
+\par
+\cf1 message\cf2  \cf4 RowMessage\cf2  \{\par
+\tab\cf1 repeated\cf2  \cf4 TileDataMessage\cf2  row = 1;\par
+\}\par
+\par
+\cf1 message\cf2  \cf4 TileDataMessage\cf2  \{\par
+\tab\cf1 required\cf2  \cf1 int32\cf2  tileType = 1;\par
+\tab\cf1 required\cf2  \cf1 int32\cf2  enemyCount = 2;\par
+\}\par
+\par
+\par
+\f2\lang3079 was machen jetzt die anderen DLLs auser WorldDataDLL\par
+\par
+Just In Time ist auf konsolen nicht erlaubt!\par
+was heisst das?\par
+C# funkt nicht wie C++\par
+bei C++ kommt maschinencode raus f\'fcr den prozessor der so ausgef\'fchrt ist\par
+aber das is bei C#/.Net nicht, da kommt ein intermediate code dazwischen raus\par
+halbater maschinencode aber nicht ganz\par
+manche teile des codes sind noch garnicht in maschinencode umgewandelt sondern erst beim ausf\'fchren!\par
+\par
+das wird auf manchen plattformen nicht erlaubt\par
+bei ios und konsolen darf man nciht als downloadbare daten(ausm internet runterladen beim laufenden programm) ein skript dabei ist das mann dan ausf\'fchrt\par
+also user generated code ist nicht erlaubt\par
+\par
+also man darf nciht einfach so code ausm internet runterladen\par
+just in time heisst das code vorher nicht kontrolliert werden kann sondern erst sp\'e4ter in maschinencode umgestezt wird\par
+\par
+standard .net web klasse hat just in time code drin\par
+\par
+mann kan mit einen eigenen command ding aus den klassen die da rauskommen die in der WorldDataDLL sind daraus kann man sich den fertig kompilierten ding wirklich machen also ahead of time und nicht just in time\par
+--> darum k\'fcmmern sich die naderen dlls\par
+\par
+\par
+BAT FILE\par
+-----------\par
+1.\par
+tools\\protoc --proto_path=proto proto\\worldData.proto --descriptor_set_out=intermediate\\worldData.proto.pb\par
+\par
+protc ist der compiler der mir aus dem proto file die klassen erzeugt\par
+wenn ich das direkt aufrufen w\'fcrde und mir c# klassen erzeugen lassen w\'fcrde\par
+dann w\'fcrd aber keine DLL kommen sondern C# dateien herauskommen\par
+\par
+aber der ProtoSerialiizer braucht DLL dateien und keine C# dateien\par
+das heisst man muss aus dem ganzen ein intermediate file machen\par
+.pb file! why? not sure egal\par
+das pb file kann man nehmen und ins protogen stopfen\par
+\par
+2.\par
+tools\\ProtoGen.exe -o:WorldDataDLL\\WorldDataDLL\\worldData.proto.cs -i:intermediate\\worldData.proto.pb\par
+\par
+ProtoGen da kann man das pb file reinschmeissen und es macht ein C# file draus\par
+worldData.proto.cs\par
+--> das liegt in WorldDataDLL --> WorldDataDLL --> proto.cs\cf0\f0\fs22\lang7\par
+wir m\'fcssen diese C# datei in eine DLL datei machen\par
+das ist das WorlDtaDLL.sln --> statt exe macht er Klassenbibliothek (DLL)\par
+\par
+3.\par
+tools\\protoc -I=proto --python_out=pythonProto proto/worldData.proto\par
+das gleiche f\'fcr python\par
+\par
+4.\par
+cd WorldDataDLL in den folder reinghen\par
+\par
+5. \par
+devenv /build Release WorldDataDLL.sln\par
+\par
+devenv IST visual studio! builded das \par
+\par
+6.\par
+Copy WorldDataDLL\\WorldDataDLL\\bin\\Release\\WorldDataDLL.dll dlls\par
+Copy WorldDataDLL\\WorldDataDLL\\bin\\Release\\protobuf-net.dll dlls \par
+\par
+dlls nehmen un in den dll folder kopieren\par
+\par
+7. cd Precompile\par
+precompile.exe -o:..\\dlls\\ProtoSerialzer.dll -t:ProtoSerializer ..\\dlls\\WorldDataDLL.dll\par
+cd ..\par
+precompile --> wohin es geh\'f6rt , er soll eien ProtoSerializer erzeugen und ich \'fcbergebe ihm die DLL\par
+\par
+dann durchlaufen lassen und man bekommt die WorldDataDLL raus wo die Daten drin stehen\par
+dann ProtoSerializer.DLL wo der serializer un deserializer drinsteht\par
+und protobuf.net das hat aber nix mit unserem projekt zu tun sondern die protocol buffer dll die allgemeinen funktionnen von protocol buffer\par
+\par
+\par
+----\par
+\par
+was wollen wir jetzut machen? wir wollen in unseren editor das speichern und laden k\'f6nnen\par
+datei erzeugen mal\par
+\par
+wenn wir es in protocol buffer speichern/laden wollen\par
+dann m\'fcssen wir einen converter schreiben der ein datentyp in ein anderen datentyp umwandelt (wegen WorldData)\par
+\par
+--> in worldutils\par
+\par
+protocol bufferhat keine datenendung\par
+aber wir werden es einfach .world nennen\par
+\par
+\par
+Nach au\'dfenhin haben wir in WorldUtils jetzt immernoch nur 2 funktionen saveworlddata und loadworlddata\par
+nur im SaveAs im worldeditorcontrol noch das .world hinzugef\'fcgt\par
+\par
+beim Open im MainWindow oben nat\'fcrlich das .world im dictionary hinzuf\'fcgen und dann auch unte beim Open string\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+}
+ 

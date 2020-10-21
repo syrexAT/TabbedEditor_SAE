@@ -1,0 +1,51 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TabbedEditor.WorldEditor"
+             xmlns:Tools="clr-namespace:TabbedEditor.WorldEditor.Tools" x:Class="TabbedEditor.WorldEditor.WorldEditorControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <DockPanel>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar x:Name="ToolsToolBar">
+                <ToggleButton ToolTip="Brush Tool">
+                    <ToggleButton.DataContext>
+                        <Tools:WorldEditorTool>LandBrush</Tools:WorldEditorTool>
+                    </ToggleButton.DataContext>
+                    <Image Width="20">
+                        <Image.Source>
+                            <DrawingImage Drawing="{StaticResource Brush}"/>
+                        </Image.Source>
+                    </Image>
+                </ToggleButton>
+                <ToggleButton ToolTip="Add Enemy">
+                    <ToggleButton.DataContext>
+                        <Tools:WorldEditorTool>AddEnemy</Tools:WorldEditorTool>
+                    </ToggleButton.DataContext>
+                    <Image Width="20">
+                        <Image.Source>
+                            <DrawingImage Drawing="{StaticResource Add}"/>
+                        </Image.Source>
+                    </Image>
+                </ToggleButton>
+                <ToggleButton ToolTip="Remove Enemy">
+                    <ToggleButton.DataContext>
+                        <Tools:WorldEditorTool>RemoveEnemy</Tools:WorldEditorTool>
+                    </ToggleButton.DataContext>
+                    <Image Width="20">
+                        <Image.Source>
+                            <DrawingImage Drawing="{StaticResource Remove}"/>
+                        </Image.Source>
+                    </Image>
+                </ToggleButton>
+            </ToolBar>
+            <ToolBar ToolTip="Choose Tile Type">
+                <ComboBox x:Name="TileTypeSelector"/>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid x:Name="WorldGrid" DockPanel.Dock="Top"/>
+    </DockPanel>
+
+</UserControl>

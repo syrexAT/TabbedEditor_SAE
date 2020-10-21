@@ -1,0 +1,29 @@
+﻿<Window x:Class="RecentFileList.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:common="clr-namespace:Common;assembly=RecentFileListLib"
+    Name="_Window"
+    WindowStartupLocation="CenterScreen"
+    Title="Recent File List Demo"
+    Height="200" Width="600">
+
+    <DockPanel>
+        
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" Command="ApplicationCommands.New" />
+                <MenuItem Header="_Open" Command="ApplicationCommands.Open" />
+                <MenuItem Header="_Save" Command="ApplicationCommands.Save" />
+                <MenuItem Header="Save _As" Command="ApplicationCommands.SaveAs" />
+                <MenuItem Header="_Close" Command="ApplicationCommands.Close"  />
+                <common:RecentFileList x:Name="RecentFileList" />
+                <MenuItem Header="E_xit" Click="Exit" />
+            </MenuItem>
+        </Menu>
+        
+        <TextBlock Name="_TextBlock" Text="{Binding ElementName=_Window, Path=Filepath}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+        
+    </DockPanel>
+    
+</Window>
