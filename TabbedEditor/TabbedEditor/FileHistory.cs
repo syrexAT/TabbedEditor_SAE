@@ -12,12 +12,14 @@ namespace TabbedEditor
     {
         public static List<string> recentFileList = new List<string>();
 
-        public static void SaveInHistory(string fileName, Type editorType)
+        public static void SaveInHistory(string fileName, Type editorType) //rückgabe? string? IEditorControl?
         {
             recentFileList.Add(fileName);
 
             string json = JsonConvert.SerializeObject(editorType);
             File.WriteAllText(fileName, json);
         }
+
+        //public static string LoadHistory(string path)
     }
 }

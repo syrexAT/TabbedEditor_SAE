@@ -1,0 +1,18 @@
+﻿<Window x:Class="TabbedEditor.HelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TabbedEditor"
+        mc:Ignorable="d"
+        Title="HelpWindow" Height="400" Width="800">
+    <Grid>
+        <TextBlock Name="HelpHeader" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Tabbed Editor Help" VerticalAlignment="Top" Margin="0,10,0,0" FontWeight="Bold" FontSize="25"/>
+        <TextBlock Name="NavigationHelp" HorizontalAlignment="Left" TextWrapping="Wrap" Text="NavigationHelp" VerticalAlignment="Top" Margin="10,50,0,0"/>
+        <TextBlock Name="WorldEditorHelp" HorizontalAlignment="Left" TextWrapping="Wrap" Text="WorldEditorHelp" VerticalAlignment="Top" Margin="10,100,0,0"/>
+        <TextBlock Name="TargaViewerHelp" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TargaViewerHelp" VerticalAlignment="Top" Margin="10,200,0,0"/>
+        <TextBlock Name="TextEditorHelp" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextEditorHelp" VerticalAlignment="Top" Margin="10,220,0,0"/>
+
+
+    </Grid>
+</Window>

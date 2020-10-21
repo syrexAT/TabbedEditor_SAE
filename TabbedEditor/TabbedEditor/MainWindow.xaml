@@ -18,6 +18,9 @@
                 <MenuItem Header="Save" Command="Save"/>
                 <MenuItem Header="Save as..." Command="SaveAs"/>
             </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="View Help" Click="HelpClicked"/>
+            </MenuItem>
         </Menu>
         <TabControl Name="TabController" DockPanel.Dock="Top">
 

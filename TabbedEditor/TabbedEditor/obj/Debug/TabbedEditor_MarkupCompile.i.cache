@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\manue\OneDrive\Dokumente\SAE_PC\TabbedEditor\TabbedEditor\TabbedEditor\obj\Debug\
+C:\Users\manue\Documents\SAE\TabbedEditor_SAE\TabbedEditor\TabbedEditor\obj\Debug\
 TabbedEditor
 none
 false
 DEBUG;TRACE
-C:\Users\manue\OneDrive\Dokumente\SAE_PC\TabbedEditor\TabbedEditor\TabbedEditor\App.xaml
-6-2051600536
+C:\Users\manue\Documents\SAE\TabbedEditor_SAE\TabbedEditor\TabbedEditor\App.xaml
+7-555524823
 
-27467439607
-17-358737864
-Icons.xaml;MainWindow.xaml;TargaViewer\TargaViewerControl.xaml;TextEditor\TextEditorControl.xaml;WorldEditor\WorldEditorControl.xaml;WorldEditor\WorldTileControl.xaml;
+282115818804
+17-823024418
+HelpWindow.xaml;Icons.xaml;MainWindow.xaml;TargaViewer\TargaViewerControl.xaml;TextEditor\TextEditorControl.xaml;WorldEditor\WorldEditorControl.xaml;WorldEditor\WorldTileControl.xaml;
 
 True
 

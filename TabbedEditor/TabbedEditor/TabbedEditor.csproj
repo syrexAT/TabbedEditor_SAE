@@ -68,6 +68,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileHistory.cs" />
+    <Compile Include="HelpWindow.xaml.cs">
+      <DependentUpon>HelpWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IEditorControl.cs" />
     <Compile Include="TargaViewer\TargaReader\BlockHeader.cs" />
     <Compile Include="TargaViewer\TargaReader\ColorUtils.cs" />
@@ -96,6 +99,10 @@
       <DependentUpon>WorldTileControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorldEditor\WorldUtils.cs" />
+    <Page Include="HelpWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

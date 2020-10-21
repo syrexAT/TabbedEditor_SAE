@@ -121,6 +121,12 @@ namespace TabbedEditor //Ganz normaler C# code
             (TabController.SelectedContent as IEditorControl).SaveAs();
         }
 
+        private void HelpClicked(object sender, RoutedEventArgs e)
+        {
+            HelpWindow helpWindow = new HelpWindow();
+            helpWindow.Show();
+        }
+
         private void CommandBinding_Open(object sender, ExecutedRoutedEventArgs e) //die 3 werden asugeführt wenn jeweils dass Command Open/Save/SaveAS ausgeführt wrd
         {
             Open();
