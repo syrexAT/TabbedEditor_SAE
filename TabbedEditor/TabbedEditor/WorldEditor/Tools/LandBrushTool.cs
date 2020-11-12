@@ -24,5 +24,9 @@ namespace TabbedEditor.WorldEditor.Tools
             //Referenz auf WorldEditorControl holen, und hol mir von dem die tileControl selber raus
             tileControl.TileType = (TileType)editor.TileTypeSelector.SelectedValue;
         }
+
+        public void OnDeselect()
+        {
+        }
     }
 }

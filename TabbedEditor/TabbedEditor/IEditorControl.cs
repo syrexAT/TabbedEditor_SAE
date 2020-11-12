@@ -15,6 +15,8 @@ namespace TabbedEditor
         //Getter/Setter für so eine Action wo man sich registrieren kann das sich der title gechagned hat
         event Action<string> TitleChanged; //doch ohne getter und setter sonst geht event nicht
 
+        string FilePath { get; }
+
         //TextChanged interresiert unds nicht weil das wird im WorldEditor nicht sein
 
         //Open --> Interessiert uns!

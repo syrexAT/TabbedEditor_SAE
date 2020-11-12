@@ -25,13 +25,14 @@ namespace TabbedEditor.WorldEditor
     /// </summary>
     public partial class WorldEditorControl : UserControl, IEditorControl
     {
+        public string FilePath => file.Path;
         //datei bearbeiten wollen und das selbe machen wie beim textfile -> Worldfile anlegen das nur die aktuellen daten beeinhaltet
         private WorldFile file = new WorldFile();
 
         private Dictionary<WorldEditorTool, IWorldEditorTool> tools = new Dictionary<WorldEditorTool, IWorldEditorTool>();
 
         //was is grad das aktive tool was benutzt wird?
-        private WorldEditorTool activeTool = WorldEditorTool.LandBrush; //landbrush bei default
+        private WorldEditorTool activeTool = WorldEditorTool.SelectTile; //landbrush bei default /// GEÄNDERT ZU SELECT
 
         public WorldEditorControl()
         {
@@ -46,6 +47,7 @@ namespace TabbedEditor.WorldEditor
             }
             TileTypeSelector.SelectedIndex = 0;
 
+            tools.Add(WorldEditorTool.SelectTile, new SelectTool(this));
             tools.Add(WorldEditorTool.LandBrush, new LandBrushTool(this));
             tools.Add(WorldEditorTool.AddEnemy, new ChangeEnemyCountTool(this, 1));
             tools.Add(WorldEditorTool.RemoveEnemy, new ChangeEnemyCountTool(this, -1));
@@ -64,15 +66,25 @@ namespace TabbedEditor.WorldEditor
 
         private void ToolButton_Click(object sender, RoutedEventArgs e)
         {
+            ToggleButton toolButton = sender as ToggleButton;
+            WorldEditorTool newTool = (WorldEditorTool)toolButton.DataContext;
+
+            if (activeTool == newTool)
+            {
+                return;
+            }
+
+            tools[activeTool].OnDeselect();
+            
             foreach (ToggleButton otherToolButton in ToolsToolBar.Items) //alle deaktivieren die wir nicht geklickt haben
             {
                 otherToolButton.IsChecked = false;
             }
 
             //sender zurückcasten in togglebutton
-            ToggleButton toolButton = sender as ToggleButton;
+            
             toolButton.IsChecked = true;
-            activeTool = (WorldEditorTool)toolButton.DataContext; //in das enum reincasten, activeTool ändern, weil ihc das ActiveTool geändert hab wird genau das ausgeführt was das Tool auf Click macht
+            activeTool = newTool; //in das enum reincasten, activeTool ändern, weil ihc das ActiveTool geändert hab wird genau das ausgeführt was das Tool auf Click macht
         }
 
         public bool UnsavedChanges { get { return false; } } //
@@ -213,7 +225,7 @@ namespace TabbedEditor.WorldEditor
             }
             else //gibt einen pfad
             {
-                title += $"{file.Path}"; 
+                title += $"{file.Name}"; 
             }
             title += (file.UnsavedChanges ? "*" : "");
 

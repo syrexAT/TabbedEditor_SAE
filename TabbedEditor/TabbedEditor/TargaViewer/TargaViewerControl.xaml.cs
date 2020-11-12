@@ -21,6 +21,8 @@ namespace TabbedEditor.TargaViewer
     /// </summary>
     public partial class TargaViewerControl : UserControl, IEditorControl
     {
+        public string FilePath { get; private set; }
+
         public TargaViewerControl()
         {
             InitializeComponent();
@@ -32,7 +34,8 @@ namespace TabbedEditor.TargaViewer
 
         public void Open(string path)
         {
-            TitleChanged?.Invoke(path);
+            FilePath = path;
+            TitleChanged?.Invoke(path.Split('\\').Last());
             TargaFile targaFile = TargaFile.Read(path);
 
             //das macht es nur leihcter zum lesen

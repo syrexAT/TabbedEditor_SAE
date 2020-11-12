@@ -10,6 +10,7 @@ namespace TabbedEditor.WorldEditor.Tools
     {
         LandBrush,
         AddEnemy,
-        RemoveEnemy
+        RemoveEnemy,
+        SelectTile
     }
 }

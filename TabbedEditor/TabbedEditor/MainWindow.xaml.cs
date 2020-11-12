@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -40,6 +41,10 @@ namespace TabbedEditor //Ganz normaler C# code
             //Wir wollen das der text den ich in dem TextEditor eingeb genau der text is der in textfile liegt, also immer direkt ins textFile hieninschreiben
 
             InitializeComponent();
+            InfoPanelManager.Init(InfoPanel);
+            TabController.SelectionChanged += TabController_SelectionChanged;
+            FileHistory.FileHistoryChanged += UpdateRecentFiles;
+            FileHistory.Load();
 
             //Ich will ein eveent haben wo ich erfahr das wer ins textfeld was eingegeben hat und was er eingeben hat
             //ans TextFeld als event registrieren
@@ -52,6 +57,11 @@ namespace TabbedEditor //Ganz normaler C# code
             //RecentFileList hooking the MenuClick
             //RecentFileList.MenuClick += (s, e) => (e.Filepath);
 
+        }
+
+        private void TabController_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            InfoPanelManager.Hide(); //um die infopanel zu verstecken wenn wir tab wechseln
         }
 
         //eigene Open/Save/SaveAs methoden schreiben, weil für nachher müssen wir es flexibler gestalten
@@ -74,11 +84,26 @@ namespace TabbedEditor //Ganz normaler C# code
             string[] splittedPath = openDialog.FileName.Split('.'); //liefer array an strings zurück und kommt drauf an wie viele punkte vorkommen, uns interessiert das aller letzte element! wegen dateieendung
             string ending = splittedPath[splittedPath.Length - 1]; //liefert jetzt entweder .json oder .txt zurück
 
+            Type type = EndingToType[ending];
+            var tab = FindTab(openDialog.FileName, type);
+            if (!(tab is null)) //schauen ob der tab offen ist dann selektireren wir ihn einfach
+            {
+                TabController.SelectedValue = tab;
+                return;
+            }
+            IEditorControl editorControl = OpenTab(type); //IEditorControl statt TextEditorControl, weil der hat ja die OpenMethode
+            try
+            {
+                editorControl.Open(openDialog.FileName);
+            }
+            catch (Exception exc)
+            {
+                TabController.Items.RemoveAt(TabController.Items.Count - 1);
+                MessageBox.Show("Could not open file:\n" + exc.Message, "Error");
+            }
+            FileHistory.Add(openDialog.FileName, type);
+            //FileHistory.SaveInHistory(openDialog.FileName, editorControl.GetType());
 
-            IEditorControl editorControl = OpenTab(EndingToType[ending]); //IEditorControl statt TextEditorControl, weil der hat ja die OpenMethode
-            editorControl.Open(openDialog.FileName);
-            FileHistory.SaveInHistory(openDialog.FileName, editorControl.GetType());
-            
             //RecentFileList.InsertFile(openDialog.FileName);
         }
 
@@ -166,5 +191,107 @@ namespace TabbedEditor //Ganz normaler C# code
 
             }
         }
+
+        private void UpdateRecentFiles()
+        {
+            RecentFileList.Items.Clear(); //ansonsten bleiben die alten auch dort
+            EditorFile[] history = FileHistory.GenerateList();
+            if (history.Length == 0)
+            {
+                RecentFileList.Items.Add(new MenuItem() { Header = "Empty", IsEnabled = false });
+                return;
+            }
+
+            foreach (EditorFile entry in history)
+            {
+                MenuItem listEntry = new MenuItem();
+                listEntry.Header = $"[{FileHistory.GetEditorName(entry.Editor)}]\t    {entry.Path.Split('\\').Last()}";
+                listEntry.ToolTip = entry.Path;
+                listEntry.Click += RecentFilesEntryOnClick;
+                listEntry.DataContext = entry;
+                RecentFileList.Items.Add(listEntry);
+            }
+
+            RecentFileList.Items.Add(new Separator());
+            MenuItem clearHistory = new MenuItem();
+            clearHistory.Header = "Clear History";
+            clearHistory.ToolTip = "Clear recent file history";
+            clearHistory.Click += ClearHistoryOnClick;
+            RecentFileList.Items.Add(clearHistory);
+        }
+
+        private void ClearHistoryOnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("You are about to clear the whole file history! Do you want to continue?", "Clear History", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                FileHistory.ResetHistory();
+            }
+        }
+
+        private void RecentFilesEntryOnClick(object sender, RoutedEventArgs e) //zum öffnen der datei wenn der eintrag angeklickt wird
+        {
+            var fileHistoryEntry = (sender as MenuItem)?.DataContext as EditorFile; //weil jeder entry als datacontext eingespeichert ist oben
+            var type = fileHistoryEntry.GetEditorType();
+
+            var tab = FindTab(fileHistoryEntry.Path, type);
+            if (!(tab is null)) //schauen ob der tab offen ist dann selektireren wir ihn einfach
+            {
+                TabController.SelectedValue = tab;
+                return;
+            }
+
+            if (!typeof(IEditorControl).IsAssignableFrom(type)) //schauen ob der type der uns übergeben wurde vom IEditorControl abstammt
+            {
+                if (MessageBox.Show("Invalid entry! Do you want to remove it from the recent file list?", "Invalid Entry", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    FileHistory.Remove(fileHistoryEntry);
+                }
+                return;
+            }
+
+            if (!File.Exists(fileHistoryEntry.Path)) //falls datei verschoben/gelöscht wurde
+            {
+                if (MessageBox.Show("The file does not exist! Do you want to remove it from the recent file list?", "Missing file", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    FileHistory.Remove(fileHistoryEntry);
+                }
+                return;
+            }
+
+            IEditorControl editorControl = OpenTab(type);
+            bool loadSuccess = false;
+
+            try
+            {
+                editorControl.Open(fileHistoryEntry.Path);
+                loadSuccess = true;
+            }
+            catch (Exception except)
+            {
+                TabController.Items.RemoveAt(TabController.Items.Count - 1);
+                MessageBox.Show("Failed to load file.");
+            }
+            if (loadSuccess)
+            {
+                FileHistory.Add(fileHistoryEntry.Path, type);
+            }
+
+        }
+
+        private TabItem FindTab(string path, Type type)
+        {
+            foreach (TabItem item in TabController.Items)
+            {
+                if (item.Content is IEditorControl child && child.GetType() == type && child.FilePath == path)
+                {
+                    return item;
+                }
+            }
+
+            return null;
+        }
+
+
+
     }
 }

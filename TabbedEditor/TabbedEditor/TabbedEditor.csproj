@@ -67,11 +67,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EditorFile.cs" />
     <Compile Include="FileHistory.cs" />
     <Compile Include="HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="IEditorControl.cs" />
+    <Compile Include="InfoPanelManager.cs" />
+    <Compile Include="SelectInfo.xaml.cs">
+      <DependentUpon>SelectInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TargaViewer\TargaReader\BlockHeader.cs" />
     <Compile Include="TargaViewer\TargaReader\ColorUtils.cs" />
     <Compile Include="TargaViewer\TargaReader\ImageType.cs" />
@@ -90,6 +95,7 @@
     <Compile Include="WorldEditor\Tools\ChangeEnemyCountTool.cs" />
     <Compile Include="WorldEditor\Tools\IWorldEditorTool.cs" />
     <Compile Include="WorldEditor\Tools\LandBrushTool.cs" />
+    <Compile Include="WorldEditor\Tools\SelectTool.cs" />
     <Compile Include="WorldEditor\Tools\WorldEditorTool.cs" />
     <Compile Include="WorldEditor\WorldEditorControl.xaml.cs">
       <DependentUpon>WorldEditorControl.xaml</DependentUpon>
@@ -119,6 +125,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SelectInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TargaViewer\TargaViewerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

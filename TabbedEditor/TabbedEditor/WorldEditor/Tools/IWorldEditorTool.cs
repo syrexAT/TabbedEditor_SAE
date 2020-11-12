@@ -10,5 +10,7 @@ namespace TabbedEditor.WorldEditor.Tools
     interface IWorldEditorTool
     {
         void OnClick(WorldTileControl tileControl, MouseButtonEventArgs e);
+
+        void OnDeselect();
     }
 }

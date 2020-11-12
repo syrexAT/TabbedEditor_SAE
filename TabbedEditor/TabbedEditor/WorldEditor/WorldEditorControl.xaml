@@ -10,6 +10,16 @@
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar x:Name="ToolsToolBar">
+                <ToggleButton ToolTip="Select Tile">
+                    <ToggleButton.DataContext>
+                        <Tools:WorldEditorTool>SelectTile</Tools:WorldEditorTool>
+                    </ToggleButton.DataContext>
+                    <Image Width="20">
+                        <Image.Source>
+                            <DrawingImage Drawing="{StaticResource Select}"/>
+                        </Image.Source>
+                    </Image>
+                </ToggleButton>
                 <ToggleButton ToolTip="Brush Tool">
                     <ToggleButton.DataContext>
                         <Tools:WorldEditorTool>LandBrush</Tools:WorldEditorTool>

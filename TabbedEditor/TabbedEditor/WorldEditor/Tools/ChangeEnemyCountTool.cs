@@ -28,5 +28,9 @@ namespace TabbedEditor.WorldEditor.Tools
             }
             tileControl.EnemyCount += enemyDelta; //enemydelta is entweder +1 oder -1, also entweder fügen wir da gegner hinzu oder nehmen sie herraus
         }
+
+        public void OnDeselect()
+        {
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace TabbedEditor.TextEditor
     {
         public event Action<string> TitleChanged; //damit wir die Tab Titles verändert können
         //Action ist ein callback zu dem man sihc registrieren kann, ein string wird zurückgelifert, quasi das selbe wie bei einer Liste aufgebaut
-
+        public string FilePath => file.Path;
 
         private TextFile file = new TextFile(); //Member von MainWindow und wir holen und das TextFile, es is direkt ein neues file und kann somit nicht null sein
         public TextEditorControl()
@@ -76,7 +76,7 @@ namespace TabbedEditor.TextEditor
             }
             else //gibt einen pfad
             {
-                title += $"{file.Path}"; //ich möchte anzheigen ob wir schon gespeichert haben oder nicht 
+                title += $"{file.Name}"; //ich möchte anzheigen ob wir schon gespeichert haben oder nicht 
             }
             //If else in einer zeile, erstes ist If --> wenn true dann * sonst ""
             title += (file.UnsavedChanges ? "*" : "");

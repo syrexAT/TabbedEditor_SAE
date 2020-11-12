@@ -17,13 +17,19 @@
                 <MenuItem Header="Open..." Command="Open"/>
                 <MenuItem Header="Save" Command="Save"/>
                 <MenuItem Header="Save as..." Command="SaveAs"/>
+                <Separator/>
+                <MenuItem Name="RecentFileList" Header="Recent Files"></MenuItem>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="View Help" Click="HelpClicked"/>
             </MenuItem>
         </Menu>
-        <TabControl Name="TabController" DockPanel.Dock="Top">
+        <DockPanel>
+            <StackPanel Name="InfoPanel" DockPanel.Dock="Right" Width="0">
+            </StackPanel>
+            <TabControl Name="TabController" DockPanel.Dock="Top">
 
-        </TabControl>
+            </TabControl>
+        </DockPanel>
     </DockPanel>
 </Window>
