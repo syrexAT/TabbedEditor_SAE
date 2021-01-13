@@ -26,6 +26,8 @@ namespace TabbedEditor //Ganz normaler C# code
     /// </summary>
     public partial class MainWindow : Window
     {
+        public bool viableMap = false;
+
         public static Dictionary<string, Type> EndingToType = new Dictionary<string, Type>() //EndingToType kann man jetzt überall benutzen und sagen welchen type er erzeugen soll bei welcher dateiendung
         {
             //gleich die elemetne hinzufügen
@@ -136,9 +138,12 @@ namespace TabbedEditor //Ganz normaler C# code
 
         private void Save()
         {
+            //CheckWaterTiles();
+            //if (viableMap == true)
+            //{
             //Den aktuellen selektierten Content holen
             (TabController.SelectedContent as IEditorControl).Save(); //als textEditorControl casten
-
+            //}
         }
 
         private void SaveAs()
@@ -159,7 +164,12 @@ namespace TabbedEditor //Ganz normaler C# code
 
         private void CommandBinding_Save(object sender, ExecutedRoutedEventArgs e)
         {
+            //hier saved er als erstes er checkt garnicht die tiles
+            //Save();
+            //CheckWaterTiles();
+            //if (viableMap == true)
             Save();
+
         }
 
         private void CommandBinding_SaveAs(object sender, ExecutedRoutedEventArgs e)
@@ -291,6 +301,20 @@ namespace TabbedEditor //Ganz normaler C# code
             return null;
         }
 
+        //private void CheckWaterTiles()
+        //{
+        //    if (WorldUtils.tiles.Count > WorldUtils.waterTiles.Count)
+        //    {
+        //        viableMap = true;
+        //    }
+        //    else
+        //    {
+        //        viableMap = false;
+        //        MessageBox.Show("Too many water tiles!", "Too many water tiles", MessageBoxButton.OK);
+        //        WorldUtils.tiles.Clear();
+        //        WorldUtils.waterTiles.Clear();
+        //    }
+        //}
 
 
     }

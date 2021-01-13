@@ -56,7 +56,7 @@ namespace TabbedEditor
             }
             catch (Exception e)
             {
-                if (MessageBox.Show("Could not load file history!\nDo you want to reset the file history?", "Tabbed Editor - History Error", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Error: Could not load file history!\nDo you want to reset the file history?", "Tabbed Editor - History Error", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     ResetHistory();
                 }
@@ -82,7 +82,7 @@ namespace TabbedEditor
             }
             catch (Exception e)
             {
-                MessageBox.Show("Could not save file history!");
+                MessageBox.Show("Error: Could not save file history!");
             }
         }
 

@@ -34,6 +34,9 @@ namespace TabbedEditor.WorldEditor
         //was is grad das aktive tool was benutzt wird?
         private WorldEditorTool activeTool = WorldEditorTool.SelectTile; //landbrush bei default /// GEÄNDERT ZU SELECT
 
+        private List<int> tiles = new List<int>();
+        private List<int> waterTiles = new List<int>();
+
         public WorldEditorControl()
         {
             InitializeComponent();
@@ -59,7 +62,7 @@ namespace TabbedEditor.WorldEditor
             }
 
             //standardmäßig eines active setzen
-            ToggleButton activeToolButton = ToolsToolBar.Items[0] as ToggleButton; 
+            ToggleButton activeToolButton = ToolsToolBar.Items[0] as ToggleButton;
             activeToolButton.IsChecked = true;
             activeTool = (WorldEditorTool)activeToolButton.DataContext;
         }
@@ -75,14 +78,14 @@ namespace TabbedEditor.WorldEditor
             }
 
             tools[activeTool].OnDeselect();
-            
+
             foreach (ToggleButton otherToolButton in ToolsToolBar.Items) //alle deaktivieren die wir nicht geklickt haben
             {
                 otherToolButton.IsChecked = false;
             }
 
             //sender zurückcasten in togglebutton
-            
+
             toolButton.IsChecked = true;
             activeTool = newTool; //in das enum reincasten, activeTool ändern, weil ihc das ActiveTool geändert hab wird genau das ausgeführt was das Tool auf Click macht
         }
@@ -134,7 +137,7 @@ namespace TabbedEditor.WorldEditor
                 {
                     TileData tileData = tileArray[x, y];
                     //Elemente in unser worldgrid hinzufügen, erstmals einfach einen button
-                    WorldTileControl tileControl = new WorldTileControl(tileData); 
+                    WorldTileControl tileControl = new WorldTileControl(tileData);
                     //sagen in welche row und columns es kommt, button kann also nicht irgendwie SetGridPosition methode haben
                     //also ich muss von außen sagen was das attribut vom button ist auf welche position es hinmuss
                     Grid.SetColumn(tileControl, x);
@@ -177,6 +180,7 @@ namespace TabbedEditor.WorldEditor
 
         public void Save()
         {
+
             if (string.IsNullOrEmpty(file.Path))
             {
                 SaveAs();
@@ -210,22 +214,30 @@ namespace TabbedEditor.WorldEditor
         private void SaveFileToDisk()
         {
             WorldUtils.SaveWorldData(file.Data, file.Path);
-            file.UnsavedChanges = false;
-            SetTitle();
+            if (WorldUtils.viable == true)
+            {
+                file.UnsavedChanges = false;
+                SetTitle();
+            }
+            else
+            {
+                MessageBox.Show("Too many water tiles! new new new", "Too many", MessageBoxButton.OK);
+            }
+
         }
 
 
         private void SetTitle() //kann aber z.B. IEditorControl auch zu einer abstrakten klasse machen und nicht INterface dann hat es vorimplementierte methoden wie SetTitle
         {
             string title = "";
-            if (string.IsNullOrEmpty(file.Path)) 
+            if (string.IsNullOrEmpty(file.Path))
             {
 
-                title += $"New File"; 
+                title += $"New File";
             }
             else //gibt einen pfad
             {
-                title += $"{file.Name}"; 
+                title += $"{file.Name}";
             }
             title += (file.UnsavedChanges ? "*" : "");
 

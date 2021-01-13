@@ -13,6 +13,10 @@ namespace TabbedEditor.WorldEditor
 {
     public static class WorldUtils //mit static gibt es nichtmal mehr eine instnaz von der klasse, kann hier nichtmal mehr eine nicht static methode reinschreiben
     {
+        public static List<int> tiles = new List<int>();
+        public static List<int> waterTiles = new List<int>();
+        public static bool viable = false;
+
         public static WorldData LoadWorldData(string path)
         {
             WorldData worldData = null;
@@ -30,14 +34,21 @@ namespace TabbedEditor.WorldEditor
 
         public static void SaveWorldData(WorldData worldData, string path)
         {
-            if (path.EndsWith(".json"))
+
+            CheckTiles(worldData);
+            if (viable)
             {
-                SaveJsonData(worldData, path);
+                if (path.EndsWith(".json"))
+                {
+                    SaveJsonData(worldData, path);
+                }
+                else if (path.EndsWith(".world"))
+                {
+                    SaveProtoData(worldData, path);
+                }
             }
-            else if (path.EndsWith(".world"))
-            {
-                SaveProtoData(worldData, path);
-            }
+
+
         }
 
         private static void SaveProtoData(WorldData worldData, string path)
@@ -133,6 +144,39 @@ namespace TabbedEditor.WorldEditor
             return worldData;
         }
 
+        public static void CheckTiles(WorldData worldData)
+        {
+            for (int y = 0; y < worldData.TileArray.GetLength(1); y++)
+            {
+                for (int x = 0; x < worldData.TileArray.GetLength(0); x++)
+                {
+                    TileData tileData = worldData.TileArray[x, y];
+                    if (tileData.TileType == TileType.Water)
+                    {
+                        waterTiles.Add(1);
+                        //tiles.Add(1);
+                    }
+                    else
+                    {
+                        tiles.Add(1);
+                    }
+                }
+            }
+
+            if (waterTiles.Count > tiles.Count)
+            {
+                viable = false;
+            }
+            else
+            {
+                viable = true;
+            }
+
+            //die ans ende !
+            waterTiles.Clear();
+            tiles.Clear();
+
+        }
 
     }
 }
